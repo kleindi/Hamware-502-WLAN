@@ -10,12 +10,12 @@ Client-/Server-System für zuverlässige, latenzarme Datenübertragung
 über WLAN in MicroPython.
 
 ### Komponenten
-- **Server** (`server_AT502_debugsocket_rssi_crlf_port23.py`)  
+- **Server** (`server/main.py`)  
   Lauscht auf Port 1234, verarbeitet Bit-Strings, gibt Debug-Infos 
   über **Telnet (Port 23)** aus und zeigt Status über LED GP28.  
   Zeigt zudem WLAN-RSSI zur Kontrolle der Signalstärke.
 
-- **Client** (`client_AT502_debugsocket_rssi_crlf_port23.py`)  
+- **Client** (`client/main.py`)  
   Liest 23 Eingänge (GPIO 0-22, Pull-Ups, invertiert), sendet deren 
   Status regelmäßig an den Server und gibt Debug-Infos ebenfalls 
   über **Telnet (Port 23)** aus.
@@ -47,7 +47,7 @@ Trage in `secrets.py`:
 ```python
 ssid = "dein_WLAN"
 password = "dein_Passwort"
-server_ip = "192.168.11.54"   # IP des Servers
+server_ip = "aaa.bbb.ccc.ddd"   # IP des Servers
 ```
 
 ### 4. Start
@@ -59,8 +59,8 @@ Beim Einschalten:
 ### 5. Telnet-Verbindung
 Mit jedem Telnet-Client:
 ```bash
-telnet 192.168.11.54        # Server
-telnet 192.168.11.56        # Client
+telnet aaa.bbb.ccc.ddd        # Server
+telnet aaa.bbb.ccc.ddd        # Client
 ```
 
 Beenden mit `Ctrl+]` und `quit`.
