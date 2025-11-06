@@ -4,7 +4,8 @@
 # --------------------------------------------------------------
 # - Port 1234: Kommunikation mit Client
 # - Port 23:   Debug-Ausgabe (Telnet-kompatibel, CRLF)
-# - LED GP28: an = Client verbunden / blinkt = kein Client
+# - GPIO 0–22: Ausgänge, folgen Client-Bitstring
+# - LED GP28:  AN = Client verbunden / blinkt = kein Client
 # ==============================================================
 
 import network, socket, time
@@ -19,6 +20,9 @@ def led_on(): led.value(1)
 def led_off(): led.value(0)
 def led_toggle(): led.toggle()
 led_off()
+
+# 23 Ausgänge (GPIO 0–22), initial auf LOW
+outputs = [Pin(i, Pin.OUT, value=0) for i in range(23)]
 
 print("⏳ Starte Server in 2 Sekunden …")
 for _ in range(4):
@@ -164,6 +168,13 @@ def run_server():
                         rssi = "?"
                     msg = f"📥 TRX={trx} L={l} ANT={ant} {antname} RSSI={rssi}dBm"
                     debug(msg)
+
+                    # ------------------------------------------------------
+                    # Empfangenes Bitmuster auf Ausgänge legen (GPIO 0–22)
+                    # ------------------------------------------------------
+                    for i in range(min(len(s), len(outputs))):
+                        outputs[i].value(int(s[i]))
+
                     ack = f"ACK: TRX={trx} L={l} ANT={ant} {antname} RSSI={rssi}dBm\r\n".encode()
                 else:
                     msg = f"📥 Ungültige Daten empfangen: {s}"
